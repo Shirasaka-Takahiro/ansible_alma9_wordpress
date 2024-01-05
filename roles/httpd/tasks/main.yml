@@ -1,0 +1,62 @@
+---
+- name: install httpd
+  yum:
+    name: httpd
+    state: latest
+
+- name: start and enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: create vhost directory
+  file:
+    path: /var/www/vhosts/{{ domain_name }}
+    state: directory
+    mode: "2755"
+    recurse: yes
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+
+- name: create public_html directory
+  file:
+    path: /var/www/vhosts/{{ domain_name }}/public_html
+    state: directory
+
+- name: copy index.html
+  template:
+    src: ../templates/index.html
+    dest: /var/www/vhosts/{{ domain_name }}/public_html
+    
+- name: copy vhost.conf
+  template:
+    src: ../templates/vhost.conf.j2
+    dest: /etc/httpd/conf.d/00_{{ domain_name }}.conf
+  notify:
+    - restart httpd
+
+- name: copy security.conf
+  template:
+    src: ../templates/security.conf
+    dest: /etc/httpd/conf.d/security.conf
+  notify:
+    - restart httpd
+
+- name: create a directory for file descriptor
+  file:
+    path: /etc/systemd/system/httpd.service.d
+    state: directory
+    mode: "0755"
+    recurse: yes
+
+- name: copy limits.conf
+  template:
+    src: ../templates/limits.conf
+    dest: /etc/systemd/system/httpd.service.d/limits.conf
+
+- name: disable index page
+  command: sed -i -e "s/Options Indexes FollowSymLinks/Options -Indexes +FollowSymLinks/g" /etc/httpd/conf/httpd.conf
+
+- name: disable welcome page
+  shell: cat /dev/null > /etc/httpd/conf.d/welcome.conf

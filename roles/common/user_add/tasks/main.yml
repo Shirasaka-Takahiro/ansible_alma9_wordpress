@@ -1,0 +1,17 @@
+##create user
+- name: create user
+  user:
+    name: "{{ user_name }}"
+    password: "{{ user_password | password_hash('sha512') }}"
+    #groups: "{{ user_group }}"
+    generate_ssh_key: yes
+
+- name: create authorized_keys file
+  shell: cat /home/{{ user_name }}/.ssh/id_rsa.pub >> /home/{{ user_name }}/.ssh/authorized_keys
+
+- name: change authorized_keys permission
+  file:
+    path: /home/{{ user_name }}/.ssh/authorized_keys
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0600

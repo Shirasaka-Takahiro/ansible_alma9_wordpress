@@ -1,0 +1,41 @@
+---
+- name: exclud epel's zabbix packages
+  command: sed -i -e '10a excludepkgs=zabbix*' /etc/yum.repos.d/epel.repo
+
+- name: install zabbix repository
+  yum:
+    name: "{{ zabbix_repository_url }}"
+    disable_gpg_check: yes
+
+- name: install zabbix agent package
+  yum:
+    name: zabbix-agent 
+
+- name: start and enable zabbix agent
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: yes
+
+- name: modify zabbix-agent.conf
+  lineinfile:
+    dest: /etc/zabbix/zabbix_agentd.conf
+    state: present
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: "Server=127.0.0.1" ,line: "Server={{ zabbix_server_ip | default('127.0.0.1', true) }}" }
+    - { regexp: "ServerActive=127.0.0.1" ,line: "ServerActive={{ zabbix_server_ip | default('127.0.0.1', true) }}" }
+    - { regexp: "Hostname=Zabbix server" ,line:  "Hostname={{ host_name }}" }
+  notify:
+    - restart zabbix_agent
+ 
+- name: copy userparam_memory.conf
+  template:
+    src: ../templates/userparam_memory.conf
+    dest: /etc/zabbix/zabbix_agentd.d/
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart zabbix_agent

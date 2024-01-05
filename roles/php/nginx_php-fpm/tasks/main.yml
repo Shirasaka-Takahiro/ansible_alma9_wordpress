@@ -1,0 +1,83 @@
+---
+- name: move www.conf
+  command: mv /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.conf.original
+
+- name: copy www.conf
+  template:
+    src: ../templates/www.conf
+    dest: /etc/php-fpm.d/www.conf
+
+- name: copy upstream.conf
+  template:
+    src: ../templates/upstream.conf
+    dest: /etc/nginx/conf.d
+
+- name: change owner and group of opcache directory
+  file:
+    path: /var/lib/php/opcache
+    state: directory
+    owner: root
+    group: apache
+
+- name: change owner and group of sesion directory
+  file:
+    path: /var/lib/php/session
+    state: directory
+    owner: root
+    group: apache
+
+- name: change owner and group of wsdlcache directory
+  file:
+    path: /var/lib/php/wsdlcache
+    state: directory
+    owner: root
+    group: apache
+
+- name: copy user_name.conf
+  template:
+    src: ../templates/user_name.conf
+    dest: /etc/php-fpm.d/{{ user_name }}.conf
+
+- name: change owner and group of opcache directory
+  file:
+    path: /var/lib/{{ user_name }}/opcache
+    state: directory
+    recurse: yes
+    owner: root
+    group: "{{ user_name }}"
+
+- name: change owner and group of sesion directory
+  file:
+    path: /var/lib/{{ user_name }}/session
+    state: directory
+    recurse: yes
+    owner: root
+    group: "{{ user_name }}"
+
+- name: change owner and group of wsdlcache directory
+  file:
+    path: /var/lib/{{ user_name }}/wsdlcache
+    state: directory
+    recurse: yes
+    owner: root
+    group: "{{ user_name }}"
+
+- name: start and enable php-fpm
+  service:
+    name: php-fpm
+    state: started
+    enabled: yes
+
+- name: copy vhost.conf
+  template:
+    src: ../templates/vhost.conf.j2
+    dest: /etc/nginx/conf.d/00_{{ domain_name }}.conf
+  notify:
+    - restart nginx
+
+- name: copy test.php
+  template:
+    src: ../templates/test.php
+    dest: /var/www/vhosts/{{ domain_name }}/public_html
+  notify:
+    - restart php-fpm

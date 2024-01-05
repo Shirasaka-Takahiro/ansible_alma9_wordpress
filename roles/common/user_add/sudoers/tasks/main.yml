@@ -1,0 +1,5 @@
+---
+- name: add sudoers
+  template:
+    src: ../templates/user_name
+    dest: /etc/sudoers.d/{{ user_name }}

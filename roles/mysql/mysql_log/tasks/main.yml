@@ -1,0 +1,24 @@
+---
+- name: install python-PyMySQL
+  yum:
+    name: python-PyMySQL
+    state: present
+
+- name: create logs user
+  mysql_user:
+    login_user: root
+    login_password: "{{ root_password }}"
+    name: logs
+    host: localhost
+    password: "{{ logs_dbpass }}"
+    priv: "*.*:RELOAD"
+    state: present
+  ignore_errors: yes
+
+- name: put mysql-log
+  template:
+    src: ../templates/mysql-log
+    dest: /etc/logrotate.d/mysql-log
+    owner: root
+    group: root
+    mode: 0644

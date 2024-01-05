@@ -1,0 +1,20 @@
+---
+- name: install epel and remi repository
+  yum:
+    name:
+      - epel-release
+      - "{{ php_remi_url }}"
+    disable_gpg_check: yes
+
+- name: install php
+  yum: 
+    name: "{{item}}" 
+    state: present
+    enablerepo: "remi-php{{ php_version}}"
+  with_items:
+    - "{{ php_modules }}"
+
+- name: copy php.ini
+  copy:
+    src: ../templates/php.ini
+    dest: /etc

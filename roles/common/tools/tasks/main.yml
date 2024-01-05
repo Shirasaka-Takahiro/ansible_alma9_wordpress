@@ -1,0 +1,17 @@
+---
+##install optional packages
+- name: install optional packages
+  yum:
+    name: "{{item}}" 
+    state: present
+  with_items:
+    - net-tools
+    - nmap
+    - vim
+    - bind-utils
+    - telnet
+    - wget
+    - dstat
+    - unzip
+    - zip
+    - postfix

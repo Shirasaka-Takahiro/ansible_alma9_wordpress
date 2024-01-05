@@ -1,0 +1,38 @@
+---
+##create SWAP
+- name: create swap
+  set_fact:
+    swap_file_path: /swap.img
+
+- name: create swap zone
+  command: dd if=/dev/zero of={{ swap_file_path }} bs=1M count=2048
+  args:
+    creates: '{{ swap_file_path }}'
+
+- name: chmod swap file
+  file:
+    path: '{{ swap_file_path }}'
+    mode: '600'
+  ignore_errors: yes
+
+- name: define swap file
+  command: file {{ swap_file_path }}
+  register: swap_file_test
+
+- name: create swap area
+  command: mkswap {{ swap_file_path }}
+  when: swap_file_test.stdout.find('swap file') == -1
+
+- name: enabel swap
+  command: swapon {{ swap_file_path }}
+  when: ansible_swaptotal_mb < 1
+
+- name: mount swap
+  mount:
+    name: swap
+    src: '{{ swap_file_path }}'
+    fstype: swap
+    opts: defaults
+    passno: '0'
+    dump: '0'
+    state: present

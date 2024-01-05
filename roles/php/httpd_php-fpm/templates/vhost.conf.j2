@@ -1,0 +1,15 @@
+<VirtualHost *:80>
+  ServerAdmin {{ serveradmin }}
+  ServerName {{ domain_name }}
+  DocumentRoot /var/www/vhosts/{{ domain_name }}/public_html
+  DirectoryIndex index.php index.html index.xml
+  <Directory /var/www/vhosts/{{ domain_name }}/public_html>
+    Options FollowSymLinks
+    AllowOverride All
+  </Directory>
+  <FilesMatch \.(php|phar|html)$>
+    SetHandler "proxy:unix:/run/php-fpm/{{ user_name }}.sock|fcgi://localhost"
+  </FilesMatch>
+   CustomLog "/var/log/httpd/{{ domain_name }}-access_log" combined
+   ErrorLog "/var/log/httpd/{{ domain_name }}-error_log"
+</VirtualHost>

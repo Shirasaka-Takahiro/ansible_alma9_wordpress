@@ -1,0 +1,8 @@
+server {
+    listen 80;
+    server_name  {{ domain_name }};
+    root         /var/www/vhosts/{{ domain_name }}/public_html;
+    index        index.php index.html index.htm;
+    access_log   /var/log/nginx/{{ domain_name }}_access.log main;
+    error_log    /var/log/nginx/{{ domain_name }}_error.log;
+}

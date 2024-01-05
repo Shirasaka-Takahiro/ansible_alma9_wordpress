@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# パスワード指定
+MysqlRootPasswd="{{ db_passwd }}"
+
+expect -c '
+    set timeout 10;
+    spawn mysql_config_editor set -G lroot -h localhost -u root -p;
+    expect "Enter password:";
+    send -- "'"${MysqlRootPasswd}"'\n";
+    interact;'

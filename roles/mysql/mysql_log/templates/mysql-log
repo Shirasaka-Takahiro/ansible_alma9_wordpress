@@ -1,0 +1,18 @@
+/var/log/mysql/*.log
+{
+    notifempty
+    daily
+    rotate {{ rotate_num_mysql }}
+    dateext
+    missingok
+    compress
+    delaycompress
+    postrotate
+       # just if mysqld is really running
+       if test -x /usr/bin/mysqladmin && \
+          /usr/bin/mysqladmin --login-path=llog ping &>/dev/null
+       then
+          /usr/bin/mysqladmin --login-path=llog flush-logs
+       fi
+    endscript
+}
