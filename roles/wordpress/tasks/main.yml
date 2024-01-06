@@ -1,0 +1,58 @@
+---
+- name: get wordpress
+  get_url:
+    url: "{{ wordpress_url }}"
+    dest: /tmp/wordpress.tar.gz
+
+- name: unarchive wordpress
+  unarchive:
+    src=/tmp/wordpress.tar.gz
+    dest=/tmp
+    copy=no
+
+- name: install rsync
+  yum:
+    name: rsync
+    state: present
+
+- name: move wordpress file and directory
+  synchronize:
+    src: /tmp/wordpress/
+    dest: /var/www/vhosts/{{ domain_name }}/public_html/
+    recursive: true
+  delegate_to: "{{ inventory_hostname }}"
+
+- name: change permission
+  file:
+    path: /var/www/vhosts/{{ domain_name }}/public_html
+    owner: apache
+    group: apache
+    mode: "0755"
+    recurse: yes
+
+- name: create wp-config.php
+  command: cp -ip /var/www/vhosts/{{ domain_name }}/public_html/wp-config-sample.php /var/www/vhosts/{{ domain_name }}/public_html/wp-config.php
+
+- name: change database_name in wp-config.php
+  replace:
+    path: /var/www/vhosts/{{ domain_name }}/public_html/wp-config.php
+    regexp: database_name_here
+    replace: "{{ db_name }}"
+  
+- name: change username in wp-config.php
+  replace:
+    path: /var/www/vhosts/{{ domain_name }}/public_html/wp-config.php
+    regexp: username_here
+    replace: "{{ db_user_name }}"
+
+- name: change password in wp-config.php
+  replace:
+    path: /var/www/vhosts/{{ domain_name }}/public_html/wp-config.php
+    regexp: password_here
+    replace: "{{ db_user_password }}"
+
+- name: change db_host in wp-config.php
+  replace:
+    path: /var/www/vhosts/{{ domain_name }}/public_html/wp-config.php
+    regexp: localhost
+    replace: "{{ db_host }}"

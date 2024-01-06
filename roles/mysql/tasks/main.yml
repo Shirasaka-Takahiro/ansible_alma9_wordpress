@@ -83,7 +83,7 @@
   register: org_root_password
 
 - name: update root user plugin
-  command: mysql --user root --password="{{ root_password }}" --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ root_password }}';"
+  command: mysql --user root --password={{ org_root_password.stdout }} --connect-expired-password --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ root_password }}';"
 
 - name: create mysql user
   mysql_user:

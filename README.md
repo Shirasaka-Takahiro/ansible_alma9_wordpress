@@ -5,11 +5,10 @@
 0. access_test
 1. common(yum_update,hostname,firewalld,selinux,swap,timezone,tools,kernel,file_descriptor,history_date,postfix,user_add,user_add/sudoers) 
 2. httpd
-3. Nginx
 4. MySQL(including mysql_log)
-5. PHP(including httpd_php-fpm, nginx_php-fpm)
+5. PHP(including httpd_php-fpm)
 6. Zabbix-agent(including zabbix_agent_mysql)
-7. Docker(including docker-compose)
+7. WordPress
 
 # How to run
 1. Copy private key to the keys/user.key
@@ -25,10 +24,9 @@ You need create a user for exectuing Ansible on AlamLinux9 if you use vagrant ma
 1. useradd ansible-user
 2. vi /etc/sudoers.d/ansible-user
 3. ansible-user ALL=(ALL) NOPASSWD:ALL
-4. su ansible-user
-5. cd ~
-6. ssh-keygen -t rsa -b 2048
-7. cd ~/.ssh
-8. ssh-keygen -p -m PEM -f id_rsa
-9. cat ./id_rsa.pub > ./authorized_keys
-10. chmod 600 ./authorized_keys
+4. su - ansible-user
+5. ssh-keygen -t rsa -b 2048
+6. cd ~/.ssh
+7. ssh-keygen -p -m PEM -f id_rsa 
+8. cat ./id_rsa.pub > ./authorized_keys
+9. chmod 600 ./authorized_keys
