@@ -15,26 +15,26 @@ kernel_parameters:
   - { param: 'vm.swappiness', value: '10' }
 
 ##create user
-user_name: test8
+user_name: test!
 user_password: Test1!
-user_group: test8
+user_group: test!
 
 ##change hostname
-host_name: test-web01
+host_name: ansible-wp-web01
 
-##Apache and Nginx
+##Apache
 serveradmin: test@example.com
 domain_name: test.com
 
 ##MySQL
 root_password: Testtest991!
+db_user_name: test_user
+db_user_password: Wordpress1!
+db_name: test_db
 
 ##MySQL Log
 logs_dbpass: Mysqllog991!
 rotate_num_mysql: 60
-
-##dokcer-compose URL
-docker_compose_url: https://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64
 
 ##php remi URL
 php_remi_url: https://rpms.remirepo.net/enterprise/remi-release-9.rpm

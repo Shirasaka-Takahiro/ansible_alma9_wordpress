@@ -3,7 +3,7 @@
   become: true
   user: ansible-user
   roles:
-    #- access_test
+    - access_test
     #- common/yum_update
     #- common/hostname
     #- common/firewalld
@@ -23,7 +23,7 @@
     #- mysql/mysql_log
     #- php
     #- php/httpd_php-fpm
-    - php/nginx_php-fpm
+    #- php/nginx_php-fpm
     #- docker
     #- zabbix_agent
     #- zabbix_agent/zabbix_agent_mysql

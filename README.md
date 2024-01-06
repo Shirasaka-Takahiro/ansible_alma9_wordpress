@@ -1,4 +1,5 @@
 # This is an Ansible repository for AlmaLinux8 and 9
+<br >
 
 # What this plyabook contains below(# If you don't need all modules, please comment out unnecessary ones)
 0. access_test
@@ -17,7 +18,7 @@
 3. Dry run command {{ ansible-playbook --private-key keys/user.key -i hosts playbook.yml -C }}
 4. Run command {{ ansible-playbook --private-key keys/user.key -i hosts playbook.yml -C }}
 
-# Caution!!
+# Caution!
 You need create a user for exectuing Ansible on AlamLinux9 if you use vagrant machine
 
 # How to create an ansible exec user
