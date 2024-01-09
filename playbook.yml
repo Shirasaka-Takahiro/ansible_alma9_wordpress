@@ -4,24 +4,24 @@
   user: ansible-user
   roles:
     #- access_test
-    - common/yum_update
-    - common/hostname
-    - common/firewalld
-    - common/selinux
-    - common/swap
-    - common/timezone
-    - common/tools
-    - common/kernel
-    - common/file_descriptor
-    - common/history_date
-    - common/postfix
-    - common/user_add
-    - common/user_add/sudoers
-    - httpd
-    - mysql
-    - mysql/mysql_log
-    - php
-    - php/httpd_php-fpm
-    - wordpress
+    #- common/yum_update
+    #- common/hostname
+    #- common/firewalld
+    #- common/selinux
+    #- common/swap
+    #- common/timezone
+    #- common/tools
+    #- common/kernel
+    #- common/file_descriptor
+    #- common/history_date
+    #- common/postfix
+    #- common/user_add
+    #- common/user_add/sudoers
+    #- httpd
+    #- mysql
+    #- mysql/mysql_log
+    #- php
+    #- php/httpd_php-fpm
+    #- wordpress
     #- zabbix_agent
     #- zabbix_agent/zabbix_agent_mysql

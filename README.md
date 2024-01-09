@@ -11,6 +11,8 @@
 7. WordPress
 
 # How to run
+<br >
+(Before running middleware playbooks, You should run access_test playbook to check the target server is correct)
 1. Copy private key to the keys/user.key
 2. Modify group_vars/all.yml(ex. user_name,user_password,host_name,domain_name and so on)
 3. Move to the directory where playbook.yml locates

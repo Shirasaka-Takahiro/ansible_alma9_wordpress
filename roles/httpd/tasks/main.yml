@@ -32,7 +32,7 @@
 - name: copy vhost.conf
   template:
     src: ../templates/vhost.conf.j2
-    dest: /etc/httpd/conf.d/00_{{ domain_name }}.conf
+    dest: /etc/httpd/conf.d/vhost.{{ domain_name }}.conf
   notify:
     - restart httpd
 
@@ -42,6 +42,11 @@
     dest: /etc/httpd/conf.d/security.conf
   notify:
     - restart httpd
+
+- name: copy healthcheck.conf
+  template:
+    src: ../templates/00_healthcheck.conf
+    dest: /etc/httpd/conf.d/00_healthcheck.conf
 
 - name: create a directory for file descriptor
   file:
